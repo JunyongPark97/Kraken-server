@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+{% block title %}source{% endblock %}
+{% block script %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/async/2.0.1/async.js"></script>
+{% endblock %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+    {%  if user.is_authenticated  %}
+
+        <div class="card"
+             style="font-family: 'Noto Sans CJK KR Thin';
+             margin-top: 0px;
+             ">
+            <h3 style="font-family: 'Noto Sans CJK KR Thin';
+             font-size: 20px; background-color: azure"> 사람이 입고 있는 옷 사진 업로드 </h3>
+        </div>
+
+
+
+        <div class="card" style="margin-top: 1%; border-bottom: solid blue; border-top: solid blue">
+
+            <div class="col-xs-2 col-md-1">
+                {% if prev %}
+                    <a class="btn btn-danger" href="{% url 'short_sleeve_wearing_picture_upload' pk=prev.pk %}">Prev</a>
+                {% else %}
+                    <a class="btn btn-danger" disabled="disabled">Start</a>
+                {% endif %}
+            </div>
+
+            <div>
+                <h1 style="font-family: 'Noto Sans CJK KR Bold'; font-size: 16px">
+                    id:{{ object.pk }}<br><br> {{ name }}</h1>
+                <h3 style="font-family: 'Noto Sans CJK KR Thin'; font-size: 14px;">
+                    현재버전 {{ version }} 입니다.
+                </h3>
+            </div>
+
+            <div class="col-xs-2 col-md-1">
+                {% if next %}
+                    <a class="btn btn-danger" href="{% url 'short_sleeve_wearing_picture_upload' pk=next.pk %}">Next</a>
+                {% else %}
+                    <a class="btn btn-danger" disabled="disabled">End</a>
+                {% endif %}
+            </div>
+
+        </div>
+
+
+
+        <div class="card2"><br>
+            {% if other_queryset.exists %}
+
+                <div class="card3-1" style="border: solid yellow">
+                    {% for q in other_queryset %}
+                        <div>
+                            <h3 style="font-family: 'Noto Sans CJK KR Regular'; font-size: 13px; text-align: left">
+                                이전버전</br>[version {{ q.version.version }}]
+                            </h3>
+                            {% for tag in q.tags.all %}
+                                <div class="box_1">
+                                    <img src="{{ tag.picture.url }}" width="90%" style="margin-right: 10px">
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+
+            {% endif %}
+
+            <div class="card3-2">
+                <img src="{{ represent_image.picture.url }}" style="width: 100%">
+
+            </div>
+
+            <div class="card3-3">
+                <div>
+
+                    <form action="" method="POST" autocomplete="off" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form | crispy}} <br/>
+                        <input type="submit" value="업로드">
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+
+
+    {% else %}
+        <p>You are not logged in</p>
+        <a href="{% url 'login' %}">login</a>
+    {% endif %}
+
+{% endblock %}
+
+{% block css %}
+    <style>
+
+
+        .card form {
+            max-width: 100%; /* Handles the responsive part, it will cause your form to scale with a max-width of 100% */
+        }
+
+        .box_1 {
+            display:flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-top: 5px;
+
+        }
+
+        .card {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+
+        }
+        .card2 {
+            display: flex;
+            margin-right: 3%;
+            margin-left: 3%;
+            margin-top: 0.5%;
+            align-items: flex-start;
+            justify-content: flex-start;
+        }
+
+        .card3-1 {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 50px;
+            flex-basis: 20%;
+
+        }
+        .card3-2 {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 50px;
+            border: solid black;
+            flex-basis: 30%;
+
+        }
+        .card3-3 {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 50px;
+            align-items: center;
+            {#border: solid red;#}
+            flex-basis: 30%;
+
+
+        }
+
+        .box_1 {
+            display:flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-top: 5px;
+
+        }
+        .card form {
+            max-width: 100%; /* Handles the responsive part, it will cause your form to scale with a max-width of 100% */
+        }
+
+
+        .col-md-1, .col-md-2, .col-md-3 {
+            text-align: center;
+        }
+
+        .col-md-1 p {
+            color: red;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+
+
+    </style>
+{% endblock %}
+

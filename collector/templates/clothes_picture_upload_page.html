@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% block title %}source{% endblock %}
+{% block script %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/async/2.0.1/async.js"></script>
+{% endblock %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+    {%  if user.is_authenticated  %}
+
+        <div class="card">
+            <h3 style="font-family: 'Noto Sans CJK KR Regular';
+             font-size: 20px; background-color: yellowgreen"> 옷 사진 업로드 </h3>
+        </div>
+
+
+
+        <div class="container"><br>
+            <div class="row inbox">
+                {% for q in other_queryset %}
+
+                    <h3 style="font-family: 'Noto Sans CJK KR Regular'; font-size: 18px; text-align: left">
+                        이전버전</br>[version {{ q.version.version }}]
+                    </h3>
+                    {% for tag in q.tags.all %}
+                        <div class="box_1">
+                            <img src="{{ tag.picture.url }}" width="30%" style="margin-right: 10px">
+
+                            <h3 style="font-family: 'Noto Sans CJK KR Regular'; font-size: 12px;">
+                                {{ tag.features.name }}
+                            </h3>
+                        </div>
+
+                    {% endfor %}
+
+                    <p>--------------------------</p>
+
+                {% endfor %}
+            </div>
+
+            <div class="row">
+
+                <h1 style="font-family: 'Noto Sans CJK KR Bold'; font-size: 17px">
+                    id:{{ object.pk }} - {{ name }}</h1>
+                <h3 style="font-family: 'Noto Sans CJK KR Regular'; font-size: 14px;">
+                    {{ version }} 입니다.
+                </h3>
+
+                <br>
+
+                <form action="" method="POST" autocomplete="off" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form | crispy}} <br/>
+                    <input type="submit" value="업로드">
+                </form>
+
+
+            </div>
+        </div>
+
+
+    {% else %}
+        <p>You are not logged in</p>
+        <a href="{% url 'login' %}">login</a>
+    {% endif %}
+
+{% endblock %}
+
+{% block css %}
+    <style>
+
+
+        .card form {
+            max-width: 100%; /* Handles the responsive part, it will cause your form to scale with a max-width of 100% */
+        }
+
+        .container {
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-start;
+            margin-top: 15px;
+
+        }
+
+        .box_1 {
+            display:flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-top: 5px;
+
+        }
+        .inbox {
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .card {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+
+        }
+
+            .card3-3 {
+            display: flex;
+            justify-content: flex-start;
+            margin-top: 50px;
+            align-items: center;
+            {#border: solid red;#}
+            flex-basis: 30%;
+
+
+        }
+
+
+    </style>
+{% endblock %}
+
