@@ -1,7 +1,7 @@
 # Kraken
 Data collecting and editing server
 
-<img src="https://user-images.githubusercontent.com/42544155/102356486-9c2fa080-3ff0-11eb-9bc2-6f7b52d40e02.jpg", width="500">
+![kraken](https://user-images.githubusercontent.com/42544155/102356601-c2edd700-3ff0-11eb-9894-02acb6c24cba.jpg)
 
 
 ## Kraken Server
